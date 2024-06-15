@@ -46,9 +46,6 @@ export class ProductsService {
   async getProductOrders(id: number) {
     const foundProduct = await this.productsRepo.findOne({
       where: { id },
-      relations: {
-        orders: true,
-      },
     });
 
     if (!foundProduct) throw new NotFoundException('Product not found');
@@ -58,6 +55,12 @@ export class ProductsService {
 
   createProduct(productData: CreateProductDto) {
     return this.productsRepo.save(productData);
+  }
+
+  createMultipleProducts(data: any) {
+    console.log(data);
+
+    return this.productsRepo.insert(data);
   }
 
   async updateProduct(productId: number, updateData: UpdateProductDto) {

@@ -13,8 +13,6 @@ import { ProductsService } from './products.service';
 import { CreateProductDto } from './dtos/create-product.dto';
 import { UpdateProductDto } from './dtos/update-product.dto';
 import { ProductFilters } from './interfaces/products-filters.interface';
-import { Roles } from 'src/roles/roles.decorator';
-import { RoleType } from 'src/roles/roles.model';
 
 @Controller('products')
 export class ProductsController {
@@ -45,13 +43,16 @@ export class ProductsController {
     return this.productsService.getProductOrders(Number(id));
   }
 
-  @Roles(RoleType.ADMIN)
   @Post()
   createProduct(@Body() productData: CreateProductDto) {
     return this.productsService.createProduct(productData);
   }
 
-  @Roles(RoleType.ADMIN)
+  @Post('/many')
+  createManyProducts(@Body() data: any) {
+    return this.productsService.createMultipleProducts(data);
+  }
+
   @Patch(':id')
   updateProduct(
     @Param('id') productId: string,
@@ -60,7 +61,6 @@ export class ProductsController {
     return this.productsService.updateProduct(Number(productId), updateData);
   }
 
-  @Roles(RoleType.ADMIN)
   @Delete(':id')
   deleteProduct(@Param('id') productId: string) {
     return this.productsService.deleteProduct(Number(productId));

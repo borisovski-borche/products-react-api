@@ -1,15 +1,8 @@
-import {
-  IsNegative,
-  IsNumber,
-  IsString,
-  Length,
-  Max,
-  Min,
-} from 'class-validator';
+import { IsNumber, IsString, IsUrl, Length, Max, Min } from 'class-validator';
 
 export class CreateProductDto {
   @IsString()
-  @Length(3, 30)
+  @Length(3, 100)
   title: string;
 
   @IsNumber()
@@ -20,4 +13,13 @@ export class CreateProductDto {
   @Min(0)
   @Max(10000)
   price: number;
+
+  @IsString()
+  description: string;
+
+  @IsUrl()
+  image: string;
+
+  @IsString()
+  category: string;
 }

@@ -8,8 +8,14 @@ export class CreateOrderDto {
   date: string;
 
   @IsString()
-  user: string;
+  fullName: string;
+
+  @IsString()
+  address: string;
 
   @IsArray()
-  products: number[];
+  products: {
+    productId: number;
+    quantity: number;
+  }[];
 }

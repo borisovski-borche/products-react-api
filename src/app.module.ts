@@ -9,11 +9,7 @@ import { AppService } from './app.service';
 import { ProductsModule } from './products/products.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { UsersModule } from './users/users.module';
 import { OrdersModule } from './orders/orders.module';
-import { UserAddressModule } from './user-address/user-address.module';
-import { AuthModule } from './auth/auth.module';
-import { AuthMiddleware } from './auth/auth.middleware';
 
 @Module({
   imports: [
@@ -30,35 +26,16 @@ import { AuthMiddleware } from './auth/auth.middleware';
           password: configService.get('DB_PASS'),
           database: configService.get('DB_NAME'),
           // Only used in development to allow the databse to reflect the changes in the backend
-          synchronize: false,
+          synchronize: true,
           // entities: [Product],
           autoLoadEntities: true,
-          extra: {
-            ssl: true,
-          },
         };
       },
     }),
     ProductsModule,
-    UsersModule,
     OrdersModule,
-    UserAddressModule,
-    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AuthMiddleware)
-      .exclude({
-        path: 'auth/(.*)',
-        method: RequestMethod.ALL,
-      })
-      .forRoutes({
-        path: '*',
-        method: RequestMethod.ALL,
-      });
-  }
-}
+export class AppModule {}
